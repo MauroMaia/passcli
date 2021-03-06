@@ -1,0 +1,30 @@
+[package]
+name = "passcli"
+version = "0.1.0"
+authors = ["Mauro Maia <dev@maurofilipemaia.dev>"]
+edition = "2018"
+description = "Another project to save password ussing cli"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+#clap = "3.0.0-beta.2"
+rand = "0.8.3"
+
+[dependencies.clap]
+version = "3.0.0-beta.2"
+default-features = false
+
+# Cherry-pick the features you'd like to use
+features = ["std", "suggestions", "color", "cargo", "terminal_size", "default" ]
+
+
+[package.metadata.rpm]
+package = "passcli"
+
+[package.metadata.rpm.cargo]
+buildflags = ["--release"]
+
+[package.metadata.rpm.targets]
+passcli = { path = "/usr/bin/passcli" }
