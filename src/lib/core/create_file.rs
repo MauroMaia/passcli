@@ -13,7 +13,7 @@ pub fn create_file_with_password(path: &str, password: &str) -> Result<String, S
 
     // Create a new database.
     let key = CompositeKey::from_password(password);
-    let mut db = Database::new(&key);
+    let db = Database::new(&key);
 
     let mut file = File::create(path).unwrap();
     db.save(&mut file).unwrap();

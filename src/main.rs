@@ -54,8 +54,9 @@ fn main() {
         println!("Password: {:?}", password);
     } else if let Some(ref matches) = matches.subcommand_matches(COMMAND_CREATE_DB_FILE) {
         lib::core::create_file::create_file_with_password(
-            "/tmp/test_db_with_password.kdbx",
-            "password",
+            matches.value_of("vault_path").unwrap(),
+            // FIXME - remove _or from unwrap and set password as a required argument
+            matches.value_of("password").unwrap_or("password"),
         )
         .unwrap_or_else(|err| {
             eprintln!("{}", err);
