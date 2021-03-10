@@ -1,59 +1,14 @@
-use clap::{crate_version,Arg, App, AppSettings};
+use clap::{crate_version, App, AppSettings, Arg};
+use std::process;
 
 mod lib;
 
+use crate::lib::cmd::create::{create_vault_action_command, COMMAND_CREATE_DB_FILE};
+use crate::lib::cmd::entry::add_password_action_command;
+use crate::lib::cmd::generate::{generate_password_action_command, COMMAND_GENERATE_PASSWORD};
+use crate::lib::cmd::remove::remove_password_action_command;
+
 const MFM_AUTHOR: &str = "Mauro Maia <dev@maurofilipemaia.dev>";
-
-fn add_password_action_command<'help>() -> App<'help> {
-    return App::new(lib::add_password::COMMAND_ID)
-        .about("TODO - add password to the vault")
-        .version("0.1.0")
-        .author(MFM_AUTHOR);
-    //.arg();
-}
-
-fn remove_password_action_command<'help>() -> App<'help> {
-    return App::new(lib::remove_password::COMMAND_ID)
-        .about("TODO - remove password from the vault")
-        .version("0.1.0")
-        .author(MFM_AUTHOR);
-    //.arg();
-}
-
-
-fn generate_password_action_command<'help>() -> App<'help> {
-    return App::new(lib::generate_password::COMMAND_ID)
-        .about("This subcommand generates a random password. Different charsets can be used.")
-        .version("0.1.1")
-        .author(MFM_AUTHOR)
-        .arg(
-            Arg::new("size")
-                .short('s')
-                .long("size")
-                .about("Password length")
-                .default_value("8")
-                .number_of_values(1)
-            //.validator(lib::validators::isOneDigit)
-        ).arg(
-        Arg::new("charset")
-            .short('c')
-            .long("charset")
-            .about("charset to use")
-            .default_value("full")
-            .possible_values(&lib::generate_password::POSSIBLE_CHARSETS)
-            .number_of_values(1)
-        //.validator(lib::validators::isOneDigit)
-    );
-}
-
-fn create_vault_action_command<'help>() -> App<'help> {
-    return App::new(lib::create_file::COMMAND_ID)
-        .about("TODO - create vault in local storage")
-        .version("0.1.0")
-        .author(MFM_AUTHOR);
-    //.arg();
-}
-
 
 fn main() {
     let app = App::new("Pass(word) manager program")
@@ -61,17 +16,18 @@ fn main() {
         .version(crate_version!())
         .author(MFM_AUTHOR)
         .about("Does awesome things. Or not!!!")
-        .arg(Arg::new("v")
-            .short('v')
-            .multiple(true)
-            .about("Sets the level of verbosity"))
+        .arg(
+            Arg::new("v")
+                .short('v')
+                .multiple(true)
+                .about("Sets the level of verbosity"),
+        )
         .subcommand(generate_password_action_command())
         .subcommand(create_vault_action_command())
         .subcommand(add_password_action_command())
         .subcommand(remove_password_action_command());
 
-    let matches = app
-        .get_matches();
+    let matches = app.get_matches();
 
     // You can see how many times a particular flag or argument occurred
     // Note, only flags can have multiple occurrences
@@ -84,7 +40,7 @@ fn main() {
 
     // You can check for the existence of subcommands, and if found use their
     // matches just as you would the top level app
-    if let Some(ref matches) = matches.subcommand_matches(lib::generate_password::COMMAND_ID) {
+    if let Some(ref matches) = matches.subcommand_matches(COMMAND_GENERATE_PASSWORD) {
         let size = matches.value_of("size").unwrap_or("8");
         if !size.parse::<usize>().err().is_none() {
             // TODO -  move this to an validator
@@ -96,8 +52,12 @@ fn main() {
             matches.value_of("charset").unwrap(),
         );
         println!("Password: {:?}", password);
-    } else if let Some(ref matches) = matches.subcommand_matches(lib::create_file::COMMAND_ID) {
-        lib::create_file::create_file()
+    } else if let Some(ref matches) = matches.subcommand_matches(COMMAND_CREATE_DB_FILE) {
+        lib::create_file::create_file_with_password("/tmp/test_db_with_password.kdbx", "password")
+            .unwrap_or_else(|err| {
+                eprintln!("{}", err);
+                process::exit(1);
+            });
     } else {
         println!(
             "subcommand {:?} is unavailable at the moment. It will be implemented as soon as possible. Sorry for the wait.", matches.subcommand().unwrap());

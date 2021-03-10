@@ -1,13 +1,4 @@
-use rand::{Rng};
-
-pub const COMMAND_ID: &str = "generate";
-
-pub const POSSIBLE_CHARSETS: [&str; 4] = [
-    &"full",
-    &"numeric",
-    &"alphanumeric",
-    &"chars-only"
-];
+use rand::Rng;
 
 const FULL_CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
                             abcdefghijklmnopqrstuvwxyz\
@@ -22,7 +13,6 @@ const LETTER_CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
 
 const NUMERIC_CHARSET: &[u8] = b"0123456789";
 
-
 pub fn generate_random_password(size: usize, charset_option: &str) -> String {
     let mut rng = rand::thread_rng();
 
@@ -31,7 +21,7 @@ pub fn generate_random_password(size: usize, charset_option: &str) -> String {
         "numeric" => NUMERIC_CHARSET,
         "alphanumeric" => ALPHANUMERIC_CHARSET,
         "chars-only" => LETTER_CHARSET,
-        _ => panic!("Invalid charset option")
+        _ => panic!("Invalid charset option"),
     };
     let password: String = (0..size)
         .map(|_| {

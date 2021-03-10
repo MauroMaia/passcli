@@ -43,4 +43,4 @@ clean:
 
 doc:
 	@echo -e "$(GREEN)$$(date --iso=s) - Next step -> creating docs.... $(NC)"
-	cargo doc
+	# cargo doc
