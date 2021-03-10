@@ -11,11 +11,11 @@ use crate::lib::cmd::remove::remove_password_action_command;
 const MFM_AUTHOR: &str = "Mauro Maia <dev@maurofilipemaia.dev>";
 
 fn main() {
-    let app = App::new("Pass(word) manager program")
+    let app = App::new("Pass(word) manager cli interface")
         .setting(AppSettings::ArgRequiredElseHelp)
         .version(crate_version!())
         .author(MFM_AUTHOR)
-        .about("Does awesome things. Or not!!!")
+        .about("\nDoes awesome things. Or not!!!\n")
         .arg(
             Arg::new("v")
                 .short('v')
@@ -47,17 +47,20 @@ fn main() {
             println!("Can't parse size value: {:?}", size);
         }
 
-        let password: String = lib::generate_password::generate_random_password(
+        let password: String = lib::core::generate_password::generate_random_password(
             size.parse::<usize>().unwrap(),
             matches.value_of("charset").unwrap(),
         );
         println!("Password: {:?}", password);
     } else if let Some(ref matches) = matches.subcommand_matches(COMMAND_CREATE_DB_FILE) {
-        lib::create_file::create_file_with_password("/tmp/test_db_with_password.kdbx", "password")
-            .unwrap_or_else(|err| {
-                eprintln!("{}", err);
-                process::exit(1);
-            });
+        lib::core::create_file::create_file_with_password(
+            "/tmp/test_db_with_password.kdbx",
+            "password",
+        )
+        .unwrap_or_else(|err| {
+            eprintln!("{}", err);
+            process::exit(1);
+        });
     } else {
         println!(
             "subcommand {:?} is unavailable at the moment. It will be implemented as soon as possible. Sorry for the wait.", matches.subcommand().unwrap());
