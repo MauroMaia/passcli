@@ -1,4 +1,4 @@
-use kpdb::{CompositeKey, Database, Entry, Group};
+use kpdb::{CompositeKey, Database};
 use std::fs::File;
 use std::path::Path;
 //see interface to kdbx @ https://github.com/sru-systems/rust-kpdb

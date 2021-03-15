@@ -1,6 +1,6 @@
 [package]
 name = "passcli"
-version = "0.1.3"
+version = "0.2.0"
 authors = ["Mauro Maia <dev@maurofilipemaia.dev>"]
 edition = "2018"
 description = "Another project to save password ussing cli"
@@ -12,6 +12,11 @@ license = "MIT"
 #clap = "3.0.0-beta.2"
 rand = "0.8.3"
 rust-kpdb = "0.4"
+serde = "0.9"
+serde_json = "0.9"
+serde_derive = "0.9"
+cargo-rpm = "0.8.0"
+cargo-deb = "1.29.1"
 
 [dependencies.clap]
 version = "3.0.0-beta.2"
