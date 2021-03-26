@@ -109,7 +109,7 @@ fn main() {
             matches.subcommand_matches(COMMAND_CREATE_DB_FILE).unwrap(),
         ),
         COMMAND_ADD_ENTRY => {
-            handle_command_add_entry(matches.subcommand_matches(COMMAND_CREATE_DB_FILE).unwrap())
+            handle_command_add_entry(matches.subcommand_matches(COMMAND_ADD_ENTRY).unwrap())
         }
         COMMAND_LIST_ENTRIES => {
             handle_command_list_entries(matches.subcommand_matches(COMMAND_LIST_ENTRIES).unwrap())
